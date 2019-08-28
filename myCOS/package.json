@@ -1,0 +1,15 @@
+{
+  "name": "mycos",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "ibm-cos-sdk": "^1.4.1"
+  },
+  "repository": {},
+  "engines": {
+    "node": "6.x"
+  }
+}
