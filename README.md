@@ -28,19 +28,22 @@ MyCOS uses the [IBM Cloud Object Storage SDK](https://github.com/IBM/ibm-cos-sdk
 ### Prerequisites
 1. An IBM Cloud Account
 2. Authority to create VPC resources and IBM Cloud Object Storage services in the IBM Cloud Account
-3. A provisioned instance of the [IBM Cloud Object Storage service](https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-about-ibm-cloud-object-storage#about-ibm-cloud-object-storage)
-4. IBM Cloud Object Storage service credentials with a private endpoint. [Generating Cloud Object Storage credentials](https://cloud.ibm.com/docs/services/cloud-object-storage/iam?topic=cloud-object-storage-service-credentials#service-credentials)
-7. ssh-keygen installed locally.
+3. A provisioned instance of the [IBM Cloud Object Storage service](https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-getting-started)
+4. IBM Cloud Object Storage service credentials. [Cloud Object Storage Service Credentials](https://cloud.ibm.com/docs/services/cloud-object-storage/iam?topic=cloud-object-storage-service-credentials#service-credentials)
+7. ssh-keygen installed locally. [SSH Keys](https://cloud.ibm.com/docs/vpc-on-classic-vsi?topic=vpc-on-classic-vsi-ssh-keys#ssh-keys)
+
+### Assumptions
+1. The reader has a basic knowledge of Linux commands and VI editor.
 
 ### Deploy VPC infratrsucture
 The instructions to deploy the VPC infrastructure for this scenario are available in these flavors:
-1. [Using the IBM Cloud CLI](https://github.ibm.com/customer-success/ibmcloud/blob/master/VPC_Phase1/Integrate_Services/integrate17/README-cli.md)
-2. [Using the IBM Console UI](https://github.ibm.com/customer-success/ibmcloud/blob/master/VPC_Phase1/Integrate_Services/integrate17/README-console.md)
-3. [Using the IBM Cloud API](https://github.ibm.com/customer-success/ibmcloud/blob/master/VPC_Phase1/Integrate_Services/integrate17/README-api.md)
+1. [Using the IBM Cloud CLI](README-cli.md)
+2. [Using the IBM Console UI](README-console.md)
+3. [Using the IBM Cloud API](README-api.md)
 
-### Access the VPC's Virtual Server and Install Node.js, NPM and the MyCOS sample application
+### Access the VPC's Virtual Server to Install Node.js, NPM, and the MyCOS sample application
 
-1. Issue the following command to access the Virtual Server: 
+1. Issue the following command to access the Virtual Server from your workstation: 
    `ssh -i root@*floating ip*`
     - The *floating ip* is the IP address assigned to the VPC's VSI in the previous section.
 
@@ -95,7 +98,7 @@ The instructions to deploy the VPC infrastructure for this scenario are availabl
 16. Start the application by issuing the command `npm start`
   
 ## Links
+- [IBM Cloud VPC](https://cloud.ibm.com/docs/vpc-on-classic?topic=vpc-on-classic-getting-started)
 - [IBM Cloud Object Storage](https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-about-ibm-cloud-object-storage#about-ibm-cloud-object-storage)
 - [Connecting to IBM Cloud Object Storage from VPC](https://cloud.ibm.com/docs/vpc?topic=vpc-connecting-vpc-cos#cos-direct-endpoints-for-use-with-vpc)
-- [IBM Cloud VPC](https://cloud.ibm.com/docs/vpc-on-classic?topic=vpc-on-classic-getting-started)
 - [Using Node.js with IBM Cloud Object Storage](https://cloud.ibm.com/docs/services/cloud-object-storage/libraries?topic=cloud-object-storage-node#using-node-js)

@@ -1,45 +1,7 @@
-# Integrating App deployed within VPC to COS using private network
+# Use GUI, CLI or API to Connect an App deployed within VPC to Cloud Object Storage (COS) using a private endpoint.
 
 ### Purpose
-This scenario illustrates how an application deployed in VPC can use IBM Cloud Object Storage. This scenario uses the IBM Cloud API to create IBM Cloud components.
-
-
-The example shown in this scenario includes a Node.js application *(MyCOS)* which saves records to an IBM Cloud Object Storage bucket.
-
-After completing the scenario you will be able to:
-- Create Virtual Private Clouds using the IBM Cloud console
-- Create linux Virtual Servers in a Virtual Private Cloud
-- Connect to and execute commands in a linux Virtual Server
-- Provision an IBM Cloud Object Storage service using the IBM Cloud console
-- Save data into a Cloud Object Storage bucket
-
-#### The MyCOS sample application
-This scenario includes a small Node.js application called MyCOS. This Node.js application saves data into IBM Cloud Object Storage.
-
-The MyCOS application will perform the following actions:
-1. Connect to IBM Cloud Object Storage
-2. List the buckets that are in the COS
-3. Create a new record in COS
-
-MyCOS uses the [IBM Cloud Object Storage SDK](https://github.com/IBM/ibm-cos-sdk-js) to connect to and save data to IBM Cloud Object Storage.
-
-### Architecture
-![Architecture Overview](https://github.ibm.com/customer-success/ibmcloud/blob/master/VPC_Phase1/Integrate_Services/integrate17/vpc-app-cos.png)
-
-### Prerequisites
-1. An IBM Cloud Account
-2. Authority to create VPC resources and IBM Cloud Object Storage services in the IBM Cloud Account
-3. A provisioned instance of the [IBM Cloud Object Storage service](https://console.bluemix.net/docs/services/cloud-object-storage/about-cos.html#about-ibm-cloud-object-storage)
-4. IBM Cloud Object Storage service credentials. [Generating Cloud Object Storage credentials](https://console.bluemix.net/docs/services/cloud-object-storage/iam/service-credentials.html#service-credentials)
-7. ssh-keygen installed locally.
-
-  
-
-### Assumptions
-1. You have basic knowledge of the linux VI editor
-
-
-## Section 1 Set up a VPC, VPC Subnet, Virtual Server and Floating IP
+Here we will illustrate the use of the IBM Cloud API to create the required infrastructure components for a Virtual Private Cloud needed for this scenario.
 
 ### Step 1: Login to the IBM Cloud and obtain an IAM key
 
@@ -50,7 +12,7 @@ Log into the IBM Cloud console
 ibmcloud login
 ````
 
-Obtain an IAM token by following [these directions](https://cloud.ibm.com/docs/infrastructure/vpc/example-code.html#step-2-get-an-ibm-identity-and-access-management-iam-token).
+Obtain an IAM token by following [these directions](https://cloud.ibm.com/docs/vpc?topic=vpc-set-up-environment#api-prerequisites-setup).
 **Important:** You must repeat this step to refresh your IAM token every hour, because the token expires.
  
 
@@ -78,7 +40,7 @@ curl -X POST \
   -H "accept: application/json" \
   -d "{\"name\":\"cloudant-vpc\",\"resource_group\":{\"id\":\"2f3e837a095943de958accf8ccb9bc19\"}}" | json_pp
   ```
-  - If you need to create a Resource Group, follow [these instructions](https://console.bluemix.net/docs/resources/resourcegroups.html#creating-a-resource-group)
+  - If you need to create a Resource Group, follow [these instructions](https://cloud.ibm.com/docs/resources?topic=resources-rgs#creating-a-resource-group)
 
 
 **Output**
@@ -381,71 +343,7 @@ curl -X POST $rias_endpoint/v1/floating_ips?version=2019-01-01 \
 ````
 
 Make a note of the floating IP address created, in the above example the floating IP address is ````169.61.244.118````
-  
-
-## Section 2 Access the Virtual Server and Install Node.js, NPM and the MyCOS sample application
-
-
-1. Issue the following command: 
-   `ssh -i root@*floating ip*`
-    - The *floating ip* is the IP address created in Section 3, Step 5 above.
-
-   If you need to specify the SSH Key file, use the following command:
-   `ssh -i *ssh key file* root@*floating ip*`
-    - The *ssh key file* is the full path and filename of the SSH Key file created in Section #2 above.
-
-2. Update the local package repository. Issue the command 
-   `apt update`
-3. Install Node.js and NPM by issuing the following commands:
-    - `curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -`
-    - `apt install nodejs`
-4. Verify the installation is complete by issuing the command `node --version`. You should see a valid version of Node returned that is greater than or equal to 10.15.0
-
-5. Create a new directory called 'myCOS' and change to that directory by issuing these commands:
-    - `mkdir myCOS`
-    - `cd myCOS`
-
-6. Create the package.json file by issuing the command `vi package.json`
-7. Copy the following code to your clipboard: 
-```
-   {
-      "name": "mycos",
-      "version": "0.0.1",
-      "private": true,
-      "scripts": {
-         "start": "node main.js"
-      },
-      "dependencies": {
-         "ibm-cos-sdk": "^1.4.1"
-      },
-      "repository": {},
-      "engines": {
-         "node": "6.x"
-      }
-   }
-```
-
-8. Paste the code above into the VI editor
-   *Hint: In VI, press the 'a' key to start appending text and then paste the text*
-9. Save and exit the file
-   *Hint: in VI, press the Colon key and then type wq! and press enter*
-10. Create the main.js file by issuing the command `vi main.js`
-11. Copy and paste the entire main.js source file into the vi editor. [Open the main.js file](https://github.ibm.com/customer-success/ibmcloud/blob/master/VPC_Phase1/Integrate_Services/integrate17/myCOS/main.js)
-12. Using your COS service credentials, edit the following variables in the main.js source code:
-   - apiKeyId: Set this value to the api-key in your credentials
-   - serviceInstanceId: Set this value to the resource-instance-id in your credentials
-   - endPoint: Set the endpoint based on the private endpoints [documented here](https://console.test.cloud.ibm.com/docs/infrastructure/vpc/connect-to-cos.html#connecting-to-ibm-cloud-object-storage-from-a-vpc)
-13. Set the bucketName variable to the name of a bucket in your COS that myCOS can insert data into
-14. Save and exit the file
-15. Issue the command `npm update`
-16. Start the application by issuing the command `npm start`
-
- 
-
-   
+     
 ## Links
-- [IBM Cloud Object Storage](https://console.bluemix.net/docs/services/cloud-object-storage/about-cos.html#about-ibm-cloud-object-storage)
-- [IBM Cloud Object Storage VPC endpoints](https://console.test.cloud.ibm.com/docs/infrastructure/vpc/connect-to-cos.html#connecting-to-ibm-cloud-object-storage-from-a-vpc)
-- [IBM Cloud VPC](https://cloud.ibm.com/vpc/network/vpcs)
+- [Creating VPC resources using the REST APIs](https://cloud.ibm.com/docs/vpc?topic=vpc-creating-a-vpc-using-the-rest-apis)
 - [IBM Cloud VPC API Reference](https://cloud.ibm.com/docs/infrastructure/vpc/api-doc-wrapper.html#api-reference-for-vpc)
-- [Using Node.js with IBM Cloud Object Storage](https://console.bluemix.net/docs/services/cloud-object-storage/libraries/node.html#using-node-js)
